@@ -3,12 +3,11 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\Dtos\" />
-    <Folder Include="Interfaces\Cache\" />
-    <Folder Include="Interfaces\Service\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
