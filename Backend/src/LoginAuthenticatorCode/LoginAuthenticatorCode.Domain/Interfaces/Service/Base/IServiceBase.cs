@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 
 
-
 namespace LoginAuthenticatorCode.Domain.Interfaces.Service.Base;
 
 public interface IServiceBase<TEntity> where TEntity : class
