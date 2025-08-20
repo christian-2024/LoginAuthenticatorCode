@@ -9,7 +9,8 @@ public static class ServiceDependencyInjection
     public static IServiceCollection AddServiceDependency(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
-
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IPermissionService, PermissionService>();
         return services;
     }
 }

@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LoginAuthenticatorCode.Domain\LoginAuthenticatorCode.Domain.csproj" />
+    <ProjectReference Include="..\LoginAuthenticatorCode.Shared\LoginAuthenticatorCode.Shared.csproj" />
   </ItemGroup>
 
 </Project>

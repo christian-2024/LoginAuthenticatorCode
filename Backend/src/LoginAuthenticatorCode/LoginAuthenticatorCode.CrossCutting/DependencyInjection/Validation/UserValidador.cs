@@ -22,6 +22,9 @@ public class UserValidador : AbstractValidator<User>
         RuleFor(user => user.PhoneNumber)
             .MinimumLength(16).WithMessage("O campo telefone tem no maximo 16 caracteres");
 
+        RuleFor(x => x.PermissionId)
+               .GreaterThan(0).WithMessage("É necessário incluir o tipo de acesso");
+
         RuleFor(user => user.Cpf)
             .MinimumLength(16).WithMessage("O campo Cpf tem no maximo 16 caracteres");
 

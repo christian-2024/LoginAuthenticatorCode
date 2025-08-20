@@ -9,6 +9,7 @@ public static class RepositoryDependencyInjection
     public static IServiceCollection AddSqlRepositoryDependency(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>(); 
+        services.AddScoped<IPermissionRepository, PermissionRepository>();
         return services;
     }
 }

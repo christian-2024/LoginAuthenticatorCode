@@ -1,8 +1,8 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
 using LoginAuthenticatorCode.Domain.Entities;
+using LoginAuthenticatorCode.Domain.Entities.Dtos.Auth;
 using LoginAuthenticatorCode.Domain.Entities.Dtos.PaginationDto;
 using LoginAuthenticatorCode.Domain.Entities.Dtos.UserDto.List;
 using LoginAuthenticatorCode.Domain.Enum;
@@ -17,31 +17,32 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly IValidator<User> _validator;
     private readonly IMapper _mapper;
+    private readonly IAuthenticationService _authenticationService;
 
-    public UserService(IUserRepository userRepository, IValidator<User> validator, IMapper mapper)
+    public UserService(IUserRepository userRepository, IValidator<User> validator, IMapper mapper, IAuthenticationService authenticationService)
     {
         _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         _validator = validator ?? throw new ArgumentNullException(nameof(validator));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        _authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
     }
 
     public async Task<User> AddAsync(User entity)
     {
         _ = entity ?? throw new ArgumentNullException(nameof(entity));
 
-        //var listErrorsPermission = await this.ValidateUserPermission(entity);
-        //if (listErrorsPermission.Any())
-        //    throw new ValidationException(listErrorsPermission);
+        var listErrorsPermission = await this.ValidateUserPermission(entity);
+        if (listErrorsPermission.Any())
+            throw new ValidationException(listErrorsPermission);
 
-        //var listErrors = await this.Validate(entity);
-        //if (listErrors.Any())
-        //    throw new ValidationException(listErrors);  
+        var listErrors = await this.Validate(entity);
+        if (listErrors.Any())
+            throw new ValidationException(listErrors);
 
-        //entity.Password = this.GenerateNewHashPassword(entity.Password);
+        entity.Password = this.GenerateNewHashPassword(entity.Password);
 
         await _userRepository.AddAsync(entity);
         return entity;
-
     }
 
     public async Task AddRangeAsync(IList<User> entities)
@@ -50,15 +51,15 @@ public class UserService : IUserService
 
         foreach (var entity in entities)
         {
-            //var listErrorsPermission = await this.ValidateUserPermission(entity);
-            //if (listErrorsPermission.Any())
-            //    throw new ValidationException(listErrorsPermission);
+            var listErrorsPermission = await this.ValidateUserPermission(entity);
+            if (listErrorsPermission.Any())
+                throw new ValidationException(listErrorsPermission);
 
-            //var listErrors = await this.Validate(entity);
-            //if (listErrors.Any())
-            //    throw new ValidationException(listErrors);
+            var listErrors = await this.Validate(entity);
+            if (listErrors.Any())
+                throw new ValidationException(listErrors);
 
-             entity.Password = this.GenerateNewHashPassword(entity.Password);
+            entity.Password = this.GenerateNewHashPassword(entity.Password);
         }
     }
 
@@ -66,9 +67,9 @@ public class UserService : IUserService
     {
         _ = entity ?? throw new ArgumentNullException(nameof(entity));
 
-        //var listErrorsPermission = await this.ValidateUserPermission(entity);
-        //if (listErrorsPermission.Any())
-        //    throw new ValidationException(listErrorsPermission);
+        var listErrorsPermission = await this.ValidateUserPermission(entity);
+        if (listErrorsPermission.Any())
+            throw new ValidationException(listErrorsPermission);
 
         return await _userRepository.DeleteAsync(entity);
     }
@@ -77,9 +78,9 @@ public class UserService : IUserService
     {
         var user = await _userRepository.GetByIdAsync(Id);
 
-        //var listErrorsPermission = await this.ValidateUserPermission(user);
-        //if (listErrorsPermission.Any())
-        //    throw new ValidationException(listErrorsPermission);
+        var listErrorsPermission = await this.ValidateUserPermission(user);
+        if (listErrorsPermission.Any())
+            throw new ValidationException(listErrorsPermission);
 
         return await _userRepository.DeleteAsyncById(Id);
     }
@@ -94,11 +95,11 @@ public class UserService : IUserService
 
     public async Task<IEnumerable<User>> GetAllAsync(User entity)
     {
-       _ = entity ?? throw new ArgumentNullException(nameof(entity));
+        _ = entity ?? throw new ArgumentNullException(nameof(entity));
 
-        //var listErrorsPermission = await this.ValidateUserPermission(entity);
-        //if (listErrorsPermission.Any())
-        //    throw new ValidationException(listErrorsPermission);
+        var listErrorsPermission = await this.ValidateUserPermission(entity);
+        if (listErrorsPermission.Any())
+            throw new ValidationException(listErrorsPermission);
 
         return await _userRepository.GetAllAsync(entity);
     }
@@ -109,9 +110,9 @@ public class UserService : IUserService
 
         var entity = await _userRepository.GetAsync(predicate);
 
-        //var listErrorsPermission = await this.ValidateUserPermission(entity);
-        //if (listErrorsPermission.Any())
-        //    throw new ValidationException(listErrorsPermission);
+        var listErrorsPermission = await this.ValidateUserPermission(entity);
+        if (listErrorsPermission.Any())
+            throw new ValidationException(listErrorsPermission);
 
         return entity;
     }
@@ -120,9 +121,9 @@ public class UserService : IUserService
     {
         var entity = await _userRepository.GetByIdAsync(Id);
 
-        //var listErrorsPermission = await this.ValidateUserPermission(entity);
-        //if (listErrorsPermission.Any())
-        //    throw new ValidationException(listErrorsPermission);
+        var listErrorsPermission = await this.ValidateUserPermission(entity);
+        if (listErrorsPermission.Any())
+            throw new ValidationException(listErrorsPermission);
 
         return entity;
     }
@@ -131,13 +132,13 @@ public class UserService : IUserService
     {
         _ = entity ?? throw new ArgumentNullException(nameof(entity));
 
-        //var listErrorsPermission = await this.ValidateUserPermission(entity);
-        //if (listErrorsPermission.Any())
-        //    throw new ValidationException(listErrorsPermission);
+        var listErrorsPermission = await this.ValidateUserPermission(entity);
+        if (listErrorsPermission.Any())
+            throw new ValidationException(listErrorsPermission);
 
-        //var listErrors = await this.Validate(entity);
-        //if (listErrors.Any())
-        //    throw new ValidationException(listErrors);
+        var listErrors = await this.Validate(entity);
+        if (listErrors.Any())
+            throw new ValidationException(listErrors);
 
         return await _userRepository.UpdateAsync(entity);
     }
@@ -145,20 +146,20 @@ public class UserService : IUserService
     public async Task UpdateRangeAsync(IEnumerable<User> entities)
     {
         _ = entities ?? throw new ArgumentNullException(nameof(entities));
-        
-        //foreach (var entity in entities)
-        //{
-        //    var listErrors = await this.Validate(entity);   
-        //    if (listErrors.Any())
-        //        throw new ValidationException(listErrors);
-        //}
+
+        foreach (var entity in entities)
+        {
+            var listErrors = await this.Validate(entity);
+            if (listErrors.Any())
+                throw new ValidationException(listErrors);
+        }
         await _userRepository.UpdateRangeAsync(entities);
     }
 
     public async Task<List<ValidationFailure>> Validate(User entity)
     {
-       _ = entity ?? throw new ArgumentNullException(nameof(entity));
-        
+        _ = entity ?? throw new ArgumentNullException(nameof(entity));
+
         var listErrors = await _validator.ValidateAsync(entity);
 
         var validation = _validator.Validate(entity);
@@ -177,27 +178,12 @@ public class UserService : IUserService
         return listErrors.Errors.ToList();
     }
 
-    //public async Task<List<ValidationFailure>> ValidateUserPermission(User entity)
-    //{
-    //    _ = entity ?? throw new ArgumentNullException(nameof(entity));
-    //    var listErrors = new List<ValidationFailure>();
-
-    //    var authAdmin = _authenticationService.IsAdmin();
-
-    //    if (!authAdmin)
-    //    {
-    //        var authClient = _authenticationService.UserClient();
-    //        if(authClient != entity.ClientId)
-    //            listErrors.Add(new ValidationFailure("Usuário", "Você não tem permissão para acessar esse usuário."));
-    //    }
-
-    //    return listErrors;
-    //}
     public string GenerateNewHashPassword(string password)
     {
         _ = password ?? throw new ArgumentNullException(nameof(password));
         return BCrypt.Net.BCrypt.HashPassword(password);
     }
+
     public bool VerifyHashPassword(string password, string currentPassword)
     {
         _ = password ?? throw new ArgumentNullException(nameof(password));
@@ -230,24 +216,34 @@ public class UserService : IUserService
 
     public async Task<List<ValidationFailure>> ValidateUserPermission(User entity)
     {
-        return await Task.FromResult(new List<ValidationFailure>());
+        _ = entity ?? throw new ArgumentNullException(nameof(entity));
+        var listErrors =  new List<ValidationFailure>();
+
+        var authAdmin = _authenticationService.IsAdmin();
+
+        if (!authAdmin)
+        {
+            var authUserId = _authenticationService.UserId();
+            if (authUserId != entity.Id)
+                listErrors.Add(new ValidationFailure("Usuário", "Você não tem permissão para acessar esse usuário."));
+        }
+        return listErrors;
     }
 
-    //public async Task<AuthenticateResponseDto> LoginAsync(AuthenticateRequestDto requestDto)
-    //{
-    //    _ = requestDto ?? throw new ArgumentNullException(nameof(requestDto));
+    public async Task<AuthenticateResponseDto> LoginAsync(AuthenticateRequestDto requestDto)
+    {
+        _ = requestDto ?? throw new ArgumentNullException(nameof(requestDto));
 
-    //    var user = await _userRepository.GetAsync(x => x.Email == requestDto.Email);
-    //    if (user == null)
-    //        throw new ValidationException("Senha ou Email inválido(s)");
+        var user = await _userRepository.GetAsync(x => x.Email == requestDto.Email);
+        if (user == null)
+            throw new ValidationException("Senha ou Email inválido(s)");
 
-    //    var responseLogin = _mapper.Map<AuthenticateResponseDto>(user);
+        var responseLogin = _mapper.Map<AuthenticateResponseDto>(user);
 
-    //    responseLogin.Token = await _authenticationService.AuthenticateUserAsync(user);
-    //    if(responseLogin.Token == null)
-    //        throw new ValidationException("Erro ao gerar token");
+        responseLogin.Token = await _authenticationService.AuthenticateUserAsync(user);
+        if (responseLogin.Token == null)
+            throw new ValidationException("Erro ao gerar token");
 
-    //    return responseLogin;
-    //}
+        return responseLogin;
+    }
 }
-

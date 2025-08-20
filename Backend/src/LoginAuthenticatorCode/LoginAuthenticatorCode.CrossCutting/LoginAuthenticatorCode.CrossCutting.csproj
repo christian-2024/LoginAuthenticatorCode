@@ -7,8 +7,6 @@
 
   <ItemGroup>
     <Folder Include="DependencyInjection\Cache\" />
-    <Folder Include="DependencyInjection\CacheConfig\" />
-    <Folder Include="DependencyInjection\Validation\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +17,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.5" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
+    <PackageReference Include="StackExchange.Redis" Version="2.9.11" />
   </ItemGroup>
 
   <ItemGroup>
