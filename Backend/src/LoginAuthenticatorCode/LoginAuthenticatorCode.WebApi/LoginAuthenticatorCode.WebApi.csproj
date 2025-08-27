@@ -27,10 +27,6 @@
       </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\LoginAuthenticatorCode.CrossCutting\LoginAuthenticatorCode.CrossCutting.csproj" />
     <ProjectReference Include="..\LoginAuthenticatorCode.Domain\LoginAuthenticatorCode.Domain.csproj" />
     <ProjectReference Include="..\LoginAuthenticatorCode.Service\LoginAuthenticatorCode.Service.csproj" />
