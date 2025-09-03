@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Eye, EyeOff, LogIn } from "lucide-react";
+import { connect, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import '../../assets/css/style.css';
+import { loadingToggleAction, loginAction } from "../../store/action/AuthActions"; 
 
 
 const Login = () => {
@@ -9,6 +11,9 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  let errorsObj = { email: '', password: '' };
+  const [errors, setErrors] = useState(errorsObj);
+  const dispatch = useDispatch(); 
 
   const navigate = useNavigate();
 
@@ -16,21 +21,29 @@ const Login = () => {
     alert(`${title}\n${description}`);
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmitLogin = async (e) => {
     e.preventDefault();
+      try{
+            let error = false;
+            const errorObj = { ...errorsObj };
 
-    try{
-    if (email === "stipp2@gmail.com" && password === "123456789"){
-        toast({ title: "Processando login...", description: "Validando credenciais" });
-        await new Promise((r) => setTimeout(r, 800));
-        toast({ title: "Login realizado!", description: `Bem-vindo, ${email}` });
-        navigate('/dashboard');
-        } else {
-            setError("E-mail ou senha inválidos.");
-        }
-    } catch(err) {
-        setError("Ocorreu um erro ao tentar fazer login.");
-    }
+            if (email === ''){
+              errorObj.email = 'É necessário digitar o email';
+              error = true;
+            }
+            if (password === ''){
+              errorObj.password = 'É necessário digitar a senha';
+              erro = true;
+            }
+            setErrors(errorObj);
+            if(error) {
+              return;
+            }
+            dispatch(loadingToggleAction(true));
+            dispatch(loginAction(email, password, navigate)); 
+      } catch(err) {
+          setError("Verifique E-mail e senha e tente novamente.");
+      }
   };
 
 
@@ -43,13 +56,13 @@ const Login = () => {
           <p>Acesse sua conta para continuar</p>
         </header>
 
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleSubmitLogin} className="login-form">
           <div className="form-group">
             <label htmlFor="email" className="text-label">E-mail</label>
             <input 
               id="email" 
               type="email" 
-              placeholder="voce@exemplo.com" 
+              placeholder="email@exemplo.com" 
               value={email}
               onChange={(e) => setEmail(e.target.value)} 
               className="form-input"
@@ -62,7 +75,7 @@ const Login = () => {
               <input
                 id="password"
                 type={showPassword ? "text" : "password"}
-                placeholder="Sua senha"
+                placeholder="******"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="form-input"

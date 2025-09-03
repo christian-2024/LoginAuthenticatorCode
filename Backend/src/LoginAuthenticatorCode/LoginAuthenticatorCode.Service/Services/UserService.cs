@@ -236,9 +236,16 @@ public class UserService : IUserService
 
         var user = await _userRepository.GetAsync(x => x.Email == requestDto.Email);
         if (user == null)
-            throw new ValidationException("Senha ou Email inválido(s)");
+            throw new ValidationException("Email inválido");
+
+        var password = await _userRepository.GetAsync(x => x.Password == requestDto.Password);
+        if (password == null)
+            throw new ValidationException("Senha inválida");
 
         var responseLogin = _mapper.Map<AuthenticateResponseDto>(user);
+
+        responseLogin.FullName = user.Name;
+        responseLogin.Login = user.Email;
 
         responseLogin.Token = await _authenticationService.AuthenticateUserAsync(user);
         if (responseLogin.Token == null)

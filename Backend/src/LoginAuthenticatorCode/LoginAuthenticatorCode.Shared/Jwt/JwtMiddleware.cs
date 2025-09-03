@@ -11,12 +11,12 @@ namespace LoginAuthenticatorCode.Shared.Jwt;
 public class JwtMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly AppSetting _appSetting;
+    private readonly JwtSettings _jwtSetting;
 
-    public JwtMiddleware(RequestDelegate next, IOptions<AppSetting> appSetting)
+    public JwtMiddleware(RequestDelegate next, IOptions<JwtSettings> appSetting)
     {
         _next = next;
-        _appSetting = appSetting.Value;
+        _jwtSetting = appSetting.Value;
     }
 
     public async Task Invoke(HttpContext context, IUserService userService)
@@ -34,7 +34,7 @@ public class JwtMiddleware
         try
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSetting.SecretKey);
+            var key = Encoding.ASCII.GetBytes(_jwtSetting.SecretKey);
             tokenHandler.ValidateToken(token, new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,

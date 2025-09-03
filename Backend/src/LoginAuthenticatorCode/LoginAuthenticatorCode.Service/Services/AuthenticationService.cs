@@ -14,13 +14,13 @@ namespace LoginAuthenticatorCode.Service.Services
     {
         private readonly IHttpContextAccessor _httpContext;
         private readonly IPermissionRepository _permissionRepository;
-        private readonly AppSetting _appSetting;
+        private readonly JwtSettings _jwtSetting;
 
-        public AuthenticationService(IHttpContextAccessor httpContext, IPermissionRepository permissionRepository, IOptions<AppSetting> appSetting)
+        public AuthenticationService(IHttpContextAccessor httpContext, IPermissionRepository permissionRepository, IOptions<JwtSettings> appSetting)
         {
             _httpContext = httpContext ?? throw new ArgumentNullException(nameof(httpContext));
             _permissionRepository = permissionRepository ?? throw new ArgumentNullException(nameof(permissionRepository));
-            _appSetting = appSetting.Value ?? throw new ArgumentNullException(nameof(appSetting));
+            _jwtSetting = appSetting.Value ?? throw new ArgumentNullException(nameof(appSetting));
         }
 
         public async Task<string> AuthenticateUserAsync(User user)
@@ -32,7 +32,7 @@ namespace LoginAuthenticatorCode.Service.Services
             var identity = new ClaimsIdentity(claims, "Bearer");
             var principal = new ClaimsPrincipal(identity);
 
-            var token = Common.GenerateJwtToken(claims, _appSetting);
+            var token = Common.GenerateJwtToken(claims, _jwtSetting);
 
             return token;
         }

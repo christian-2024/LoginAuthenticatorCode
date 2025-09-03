@@ -14,17 +14,17 @@ public static class Common
     /// <param name="userId"></param>
     /// <param name="appSettingSecret"></param>
     /// <returns></returns>
-    public static string GenerateJwtToken(List<Claim> additionalClaims, AppSetting appSetting)
+    public static string GenerateJwtToken(List<Claim> additionalClaims, JwtSettings jwtSettings)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(appSetting.SecretKey);
+        var key = Encoding.ASCII.GetBytes(jwtSettings.SecretKey);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(additionalClaims),
-            Issuer = appSetting.Issuer,
-            Audience = appSetting.Audience,
-            Expires = DateTime.UtcNow.AddMinutes(appSetting.TokenExpirationInMinutes),
+            Issuer = jwtSettings.Issuer,
+            Audience = jwtSettings.Audience,
+            Expires = DateTime.UtcNow.AddMinutes(jwtSettings.TokenExpirationInMinutes),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 

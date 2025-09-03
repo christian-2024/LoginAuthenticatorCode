@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using LoginAuthenticatorCode.Domain.Entities;
+using LoginAuthenticatorCode.Domain.Entities.Dtos.Auth;
 using LoginAuthenticatorCode.Domain.Entities.Dtos.NotificationDto;
 using LoginAuthenticatorCode.Domain.Entities.Dtos.NotificationDto.List;
 using LoginAuthenticatorCode.Domain.Entities.Dtos.PermissionDto;
 using LoginAuthenticatorCode.Domain.Entities.Dtos.PermissionDto.List;
 using LoginAuthenticatorCode.Domain.Entities.Dtos.UserDto;
 using LoginAuthenticatorCode.Domain.Entities.Dtos.UserDto.List;
-using Microsoft.Identity.Client;
 
 namespace LoginAuthenticatorCode.CrossCutting.DependencyInjection.AutoMapper;
 
@@ -20,6 +20,8 @@ public class MappingProfile : Profile
         CreateMap<User, UserRequestInsertDto>().ReverseMap();
         CreateMap<User, UserRequestUpdateDto>().ReverseMap();
         CreateMap<User, UserFormResponseDto>().ReverseMap();
+        CreateMap<User, AuthenticateResponseDto>().ReverseMap();
+        CreateMap<User, AuthenticateRequestDto>().ReverseMap();
         #endregion
 
         #region Notification

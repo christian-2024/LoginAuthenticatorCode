@@ -17,21 +17,21 @@ public class NotificationService : INotificationService
     private readonly IAuthenticationService _authenticationService;
     private readonly IUserService _userService;
     private readonly IMapper _mapper;
-    private readonly AppSetting _appSetting;
+    private readonly JwtSettings _jwtSetting;
     private readonly IValidator<Notification> _validator;
 
     public NotificationService(INotificationRepository notificationRepository,
                                IAuthenticationService authenticationService,
                                IUserService userService,
                                IMapper mapper,
-                               AppSetting appSetting,
+                               JwtSettings jwtSetting,
                                IValidator<Notification> validator)
     {
         _notificationRepository = notificationRepository;
         _authenticationService = authenticationService;
         _userService = userService;
         _mapper = mapper;
-        _appSetting = appSetting;
+        _jwtSetting = jwtSetting;
         _validator = validator;
     }
 
