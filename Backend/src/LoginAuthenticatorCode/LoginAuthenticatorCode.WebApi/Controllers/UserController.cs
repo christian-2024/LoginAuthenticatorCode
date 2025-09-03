@@ -400,7 +400,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> LoginUser([FromQuery] AuthenticateRequestDto requestDto)
+    public async Task<IActionResult> LoginUser([FromBody] AuthenticateRequestDto requestDto)
     {
         try
         {
