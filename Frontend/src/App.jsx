@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 
 /// React router dom
-import {  Route, Routes } from 'react-router-dom';
+import {  Route, Routes, Navigate } from 'react-router-dom';
 
 //css
 import './App.css';
@@ -15,6 +15,7 @@ import Login from './jsx/pages/Login';
 function App() {
   return (
       <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login /> }/>
         <Route path="/dashboard" element={<Dashboard /> }/>
       </Routes>
