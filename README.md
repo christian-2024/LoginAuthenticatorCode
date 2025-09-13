@@ -1,4 +1,4 @@
-# 📌 Projeto [Nome do Projeto]
+# 📌 Projeto Login Authenticator
 
 Este projeto foi desenvolvido com **back-end em C# (DDD)** e **front-end em Vite**, simulando uma tela de login com **email e senha**.  
 O objetivo é demonstrar boas práticas de arquitetura de software, separação de camadas e integração entre front-end e back-end.
