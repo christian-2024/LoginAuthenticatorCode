@@ -61,5 +61,6 @@ O objetivo é demonstrar boas práticas de arquitetura de software, separação 
 
 ### Front-end
 1. Acessar o cmd da pasta do front
-2. Execultar npm install
-
+2. Execultar 
+   ```bash
+   npm install
